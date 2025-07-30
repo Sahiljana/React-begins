@@ -38,7 +38,7 @@ function App() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-950 to-gray-800">
       <div className="w-full max-w-md shadow-2xl rounded-2xl px-8 py-8 text-orange-400 bg-white/10 border-2 border-white/60 backdrop-blur-md">
         <h1 className="text-white text-2xl font-bold text-center mb-6 tracking-wide drop-shadow-lg">
-          Sahil's <span className="text-orange-400">Password Generator</span>
+          Your Own <span className="text-orange-400">Password Generator</span>
         </h1>
         <div className="flex shadow-lg rounded-xl overflow-hidden mb-6 bg-gray-900">
           <input
