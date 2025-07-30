@@ -7,6 +7,7 @@ function App() {
   const [numberAllowed, setNumberAllowed] = useState(true);
   const [charAllowed, setCharAllowed] = useState(true);
   const [password, setPassword] = useState("");
+  const [copied, setCopied] = useState(false);
   const passwordRef = useRef(null);
 
   // Password generator function
@@ -27,6 +28,8 @@ function App() {
     passwordRef.current?.select();
     passwordRef.current?.setSelectionRange(0, 999); // For mobile devices //utne range tak hi select hoga
     window.navigator.clipboard.writeText(password);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1200);
   }, [password]);
 
   // Generate password when dependencies change
@@ -35,12 +38,14 @@ function App() {
   }, [length, numberAllowed, charAllowed, passwordGenerator]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-950 to-gray-800">
+    <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
+      {/* Animated dark background */}
+      <div className="absolute inset-0 -z-10 animate-gradient bg-gradient-to-br from-gray-900 via-gray-800 to-gray-950 opacity-90"></div>
       <div className="w-full max-w-md shadow-2xl rounded-2xl px-8 py-8 text-orange-400 bg-white/10 border-2 border-white/60 backdrop-blur-md">
         <h1 className="text-white text-2xl font-bold text-center mb-6 tracking-wide drop-shadow-lg">
           Your Own <span className="text-orange-400">Password Generator</span>
         </h1>
-        <div className="flex shadow-lg rounded-xl overflow-hidden mb-6 bg-gray-900">
+        <div className="relative flex shadow-lg rounded-xl overflow-hidden mb-6 bg-gray-900">
           <input
             type="text"
             value={password}
@@ -56,6 +61,11 @@ function App() {
             <FiCopy className="text-xl" />
             Copy
           </button>
+          {copied && (
+            <span className="absolute right-4 top-2 text-xs text-pink-400 font-bold animate-bounce">
+              Copied!
+            </span>
+          )}
         </div>
         <div className="flex flex-col gap-4">
           <div className="flex items-center justify-between">
