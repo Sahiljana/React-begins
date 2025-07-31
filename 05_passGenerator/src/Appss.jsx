@@ -1,5 +1,5 @@
 import React, { useCallback, useRef, useState } from "react";
-import { FiCopy, FiEye, FiEyeOff } from "react-icons/fi"; // npm install react-icons
+import { FiCopy } from "react-icons/fi"; // npm install react-icons
 
 function App() {
   const [length, setLength] = useState(16);
@@ -7,7 +7,6 @@ function App() {
   const [charAllowed, setCharAllowed] = useState(true);
   const [password, setPassword] = useState("");
   const [copied, setCopied] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
   const passwordRef = useRef(null);
 
   // Password generator function
@@ -32,6 +31,13 @@ function App() {
     setTimeout(() => setCopied(false), 1200);
   }, [password]);
 
+  // Auto-generate password on mount or when options change (disabled for manual generation)
+  /*
+  useEffect(() => {
+    passwordGenerator();
+  }, [length, numberAllowed, charAllowed, passwordGenerator]);
+  */
+
   return (
     <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
       {/* Animated dark background */}
@@ -41,9 +47,8 @@ function App() {
           Your Own <span className="text-orange-400">Password Generator</span>
         </h1>
         <div className="relative flex shadow-lg rounded-2xl overflow-hidden mb-10 bg-gray-900">
-          {/* Password input field */}
           <input
-            type={showPassword ? "text" : "password"} // Toggle between text and password visibility
+            type="text"
             value={password}
             className="outline-none w-full py-5 px-6 bg-transparent text-orange-300 text-2xl font-mono tracking-widest placeholder:text-gray-500 focus:bg-gray-800 transition"
             placeholder="Password"
@@ -51,40 +56,23 @@ function App() {
             ref={passwordRef}
             aria-label="Generated password"
           />
-          
-          {/* Button to show/hide password */}
-          <button
-            type="button"
-            className="absolute right-28 top-1/2 -translate-y-1/2 text-orange-300 hover:text-orange-400 px-2 bg-transparent border-none outline-none focus:outline-none shadow-none"
-            onClick={() => setShowPassword((prev) => !prev)} // Toggle the showPassword state
-            tabIndex={0}
-            aria-label={showPassword ? "Hide password" : "Show password"}
-          >
-            {showPassword ? <FiEyeOff size={28} /> : <FiEye size={28} />} {/* Show/hide icon */}
-          </button>
-          
-          {/* Button to copy password to clipboard */}
           <button
             className="flex items-center gap-3 outline-none bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 px-8 py-4 text-xl font-bold rounded-r-2xl shadow-lg transition-transform duration-150 active:scale-90 focus:ring-2 focus:ring-pink-400"
-            onClick={copyPasswordToClipboard} // Trigger copy to clipboard
+            onClick={copyPasswordToClipboard}
             aria-label="Copy password"
           >
             <FiCopy className="text-2xl" />
             Copy
           </button>
-          
-          {/* Copied confirmation message */}
           {copied && (
             <span className="absolute right-6 top-3 text-lg text-pink-400 font-bold animate-bounce">
               Copied!
             </span>
           )}
         </div>
-        
-        {/* Controls to customize password */}
         <div className="flex flex-col gap-8">
-          {/* Password length slider */}
           <div className="flex items-center justify-between">
+            {/* Password length slider */}
             <label className="text-white text-xl font-semibold" htmlFor="lengthSlider">
               Length: <span className="text-orange-400">{length}</span>
             </label>
@@ -94,17 +82,16 @@ function App() {
               min={6}
               max={32}
               value={length}
-              onChange={(e) => setLength(Number(e.target.value))} // Update password length
+              onChange={(e) => setLength(Number(e.target.value))}
               className="accent-orange-400 w-2/3 h-3"
             />
           </div>
-          
-          {/* Numbers allowed checkbox */}
           <div className="flex items-center gap-4">
+            {/* Numbers allowed checkbox */}
             <input
               type="checkbox"
               checked={numberAllowed}
-              onChange={() => setNumberAllowed((prev) => !prev)} // Toggle numbers
+              onChange={() => setNumberAllowed((prev) => !prev)}
               id="numberInput"
               className="accent-orange-400 w-6 h-6"
             />
@@ -112,13 +99,12 @@ function App() {
               Numbers
             </label>
           </div>
-          
-          {/* Characters allowed checkbox */}
           <div className="flex items-center gap-4">
+            {/* Characters allowed checkbox */}
             <input
               type="checkbox"
               checked={charAllowed}
-              onChange={() => setCharAllowed((prev) => !prev)} // Toggle special characters
+              onChange={() => setCharAllowed((prev) => !prev)}
               id="characterInput"
               className="accent-orange-400 w-6 h-6"
             />
@@ -126,11 +112,10 @@ function App() {
               Characters
             </label>
           </div>
-          
           {/* Generate Password Button */}
           <button
             className="mt-8 w-full bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 py-4 text-xl font-bold rounded-2xl shadow-lg transition-transform duration-150 active:scale-95 focus:ring-2 focus:ring-pink-400"
-            onClick={passwordGenerator} // Generate password with selected options
+            onClick={passwordGenerator}
           >
             Generate Password
           </button>
